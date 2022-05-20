@@ -3,22 +3,18 @@ package com.example.webfluxspringboot.dev.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.server.RequestPredicates;
-import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
-import org.springframework.web.reactive.function.server.ServerResponse;
+import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.server.*;
+import reactor.core.publisher.Mono;
 
-@Configuration
+@Component
 public class GreetingHandler {
 
-    @Bean
-    public RouterFunction<ServerResponse> route(GreetingHandler greetingHandler) {
-        return RouterFunctions
-                .route(RequestPredicates
-                        .GET("/hello")
-                        .and(RequestPredicates
-                        .accept(MediaType.TEXT_PLAIN)), greetingHandler::hi);
+    public Mono<ServerResponse> hello(ServerRequest request) {
+        return ServerResponse.ok()
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(BodyInserters.fromValue("Hello, Spring!"));
     }
-
 
 }
