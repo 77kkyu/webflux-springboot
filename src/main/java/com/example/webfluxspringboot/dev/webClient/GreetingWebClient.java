@@ -9,7 +9,10 @@ public class GreetingWebClient {
 
     private WebClient client = WebClient.create("http://localhost:8080");
 
-    private Mono<ClientResponse> result = client.get().uri("/hello").accept(MediaType.TEXT_PLAIN).exchange();
+    private Mono<ClientResponse> result = client.get()
+            .uri("/hello")
+            .accept(MediaType.TEXT_PLAIN)
+            .exchange();
 
     public String getResult() {
         return ">> result = " + result.flatMap(res -> res.bodyToMono(String.class)).block();
