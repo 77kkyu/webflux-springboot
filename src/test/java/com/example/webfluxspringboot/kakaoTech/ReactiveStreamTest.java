@@ -4,11 +4,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
 public class ReactiveStreamTest {
@@ -19,6 +22,10 @@ public class ReactiveStreamTest {
     final List<List<String>> baskets = Arrays.asList(basket1, basket2, basket3);
     final Flux<List<String>> basketFlux = Flux.fromIterable(baskets);
 
+    /**
+     * 블로킹 방식으로 동작 -> 논 블로킹 방식을 전혀 살릴 수 없다
+     * 한번에 해결할 수 있는데 2번의 basket을 순회 하므로 비효율
+     */
     @Test
     public void mainTest() {
         basketFlux.concatMap(basket -> {
@@ -36,9 +43,8 @@ public class ReactiveStreamTest {
                         putAll(accumulatedMap);
                         putAll(currentMap);
                     }}); // 그동안 누적된 accumulatedMap에 현재 넘어오는 currentMap을 합쳐서 새로운 Map을 만든다. // map끼리 putAll하여 하나의 Map으로 만든다.
-            // return ???
-            return null;
-        });
+            return Flux.zip(distinctFruits, countFruitsMono, (distinct, count) -> new FruitInfo(distinct, count));
+        }).subscribe(System.out::println);
     }
 
 }
