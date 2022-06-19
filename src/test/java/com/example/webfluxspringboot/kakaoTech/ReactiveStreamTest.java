@@ -3,9 +3,12 @@ package com.example.webfluxspringboot.kakaoTech;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 public class ReactiveStreamTest {
@@ -18,7 +21,24 @@ public class ReactiveStreamTest {
 
     @Test
     public void mainTest() {
-        
+        basketFlux.concatMap(basket -> {
+            final Mono<List<String>> distinctFruits = Flux.fromIterable(basket).distinct().collectList();
+            final Mono<Map<String, Long>> countFruitsMono = Flux.fromIterable(basket)
+                    .groupBy(fruit -> fruit) // 바구니로 부터 넘어온 과일 기준으로 group을 묶는다.
+                    .concatMap(groupedFlux -> groupedFlux.count()
+                            .map(count -> {
+                                final Map<String, Long> fruitCount = new LinkedHashMap<>();
+                                fruitCount.put(groupedFlux.key(), count);
+                                return fruitCount;
+                            }) // 각 과일별로 개수를 Map으로 리턴
+                    ) // concatMap으로 순서보장
+                    .reduce((accumulatedMap, currentMap) -> new LinkedHashMap<String, Long>() { {
+                        putAll(accumulatedMap);
+                        putAll(currentMap);
+                    }}); // 그동안 누적된 accumulatedMap에 현재 넘어오는 currentMap을 합쳐서 새로운 Map을 만든다. // map끼리 putAll하여 하나의 Map으로 만든다.
+            // return ???
+            return null;
+        });
     }
 
 }
