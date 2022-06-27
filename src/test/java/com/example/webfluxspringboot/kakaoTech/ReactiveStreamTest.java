@@ -137,7 +137,7 @@ public class ReactiveStreamTest {
     }
 
     @Test
-    public void 비동기처리() {
+    public void parallelTest() {
         CountDownLatch countDownLatch = new CountDownLatch(2);
         basketFlux.concatMap(basket -> {
             final Flux<String> source = Flux.fromIterable(basket).log().publish().autoConnect(2);
@@ -170,7 +170,5 @@ public class ReactiveStreamTest {
                 } // 정상적 종료시 countDown, onComplete()
         );
     }
-
-
 
 }
