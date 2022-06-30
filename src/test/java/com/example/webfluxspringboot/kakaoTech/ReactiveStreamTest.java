@@ -136,6 +136,9 @@ public class ReactiveStreamTest {
         );
     }
 
+    /**
+     * Schedulers.parallel() 스레드 여러개를 사용
+     */
     @Test
     public void parallelTest() {
         CountDownLatch countDownLatch = new CountDownLatch(2);
@@ -205,6 +208,9 @@ public class ReactiveStreamTest {
         );
     }
 
+    /**
+     * Schedulers.single() 호출할 때마다 같은 스레드를 유지
+     */
     @Test
     public void schedulersSingleTest() {
         CountDownLatch countDownLatch = new CountDownLatch(2);
