@@ -47,5 +47,43 @@ public class HotColdTest {
         mono.subscribe(System.out::println);
         mono.subscribe(System.out::println);
     }
-    
+
+    /**
+     * cold -> hot으로 변경
+     */
+    @Test
+    public void mono_create_cache_hot() {
+        Mono<String> mono = Mono.create(monoSkin -> {
+            try {
+                monoSkin.success(getUser());
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        mono = mono.cache(Duration.ofSeconds(3));
+        mono.subscribe(System.out::println);
+        mono.subscribe(System.out::println);
+        mono.subscribe(System.out::println);
+    }
+
+    /**
+     * cold -> hot
+     * publish() 메서드 호출하면 hot, ConnectableFlux으로 변환
+     * connect()를 하지 않으면 구독하지 않음
+     */
+    @Test
+    public void connect() {
+        Flux<Integer> cold = Flux.range(1,3)
+                .doOnSubscribe(x -> System.out.println("subscribe to cold"));
+
+        ConnectableFlux<Integer> hot = cold.publish();
+        hot.subscribe(System.out::println);
+        hot.subscribe(System.out::println);
+
+        System.out.println("Subscribe 진행중");
+        System.out.println("!!");
+
+        hot.connect();
+    }
+
 }
