@@ -1,5 +1,8 @@
 package com.example.webfluxspringboot.dev.controller;
 
+import com.example.webfluxspringboot.dev.domain.Board;
+import com.example.webfluxspringboot.dev.repository.BoardRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,11 +16,15 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @Slf4j
+@RequiredArgsConstructor
 @RestController
 public class TestApiController {
 
+    private final BoardRepository boardRepository;
+
     @GetMapping("/hi")
     Flux<String> hello() {
+        boardRepository.save(Board.builder().userId(1L).contents("테스트").title("제목").build());
         return Flux.just("Hello", "World");
     }
 
