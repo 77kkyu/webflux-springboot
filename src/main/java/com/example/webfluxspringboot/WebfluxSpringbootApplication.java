@@ -4,12 +4,7 @@ import com.example.webfluxspringboot.dev.webClient.GreetingWebClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.reactive.function.server.RequestPredicates;
-import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
-import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Flux;
+import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 
 @Slf4j
 @SpringBootApplication
