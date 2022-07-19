@@ -5,6 +5,10 @@ import com.example.webfluxspringboot.dev.repository.BoardRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import reactor.core.publisher.Flux;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 @SpringBootTest
 public class RepositoryTest {
@@ -13,8 +17,10 @@ public class RepositoryTest {
     private BoardRepository boardRepository;
 
     @Test
-    public void save() {
-        boardRepository.save(Board.builder().userId(1L).contents("테스트").title("제목").build());
+    public void select() {
+        Flux<Board> boardList =  boardRepository.findAll();
+        System.out.println("TEST : " + boardList);
+
     }
 
 }
