@@ -5,6 +5,7 @@ import com.example.webfluxspringboot.dev.dto.BoardAddResponseDto;
 import com.example.webfluxspringboot.dev.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 @RequiredArgsConstructor
 @Service
@@ -20,4 +21,7 @@ public class BoardService {
                 .build());
     }
 
+    public Flux<Board> getBoard() {
+        return boardRepository.findAll();
+    }
 }
