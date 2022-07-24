@@ -19,7 +19,7 @@ public class RepositoryTest {
     @Test
     public void select() {
         Flux<Board> boardList =  boardRepository.findAll();
-        System.out.println("TEST : " + boardList);
+        System.out.println("TEST : " + boardList.toString());
 
     }
 

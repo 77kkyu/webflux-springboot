@@ -1,17 +1,16 @@
 package com.example.webfluxspringboot.dev.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table("board")
 public class Board {
 
+    @Id
     private Long id;
 
     private Long userId;
