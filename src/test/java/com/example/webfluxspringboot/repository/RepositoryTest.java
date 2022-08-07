@@ -1,6 +1,7 @@
 package com.example.webfluxspringboot.repository;
 
 import com.example.webfluxspringboot.dev.domain.Board;
+import com.example.webfluxspringboot.dev.dto.BoardsResponseDto;
 import com.example.webfluxspringboot.dev.repository.BoardRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,12 @@ public class RepositoryTest {
     public void select() {
         Flux<Board> boardList =  boardRepository.findAll();
         System.out.println("TEST : " + boardList.toString());
+    }
+
+    @Test
+    public void boards() {
+        Flux<Board> boardFlux = boardRepository.findAll();
+        boardFlux.subscribe(System.out::println);
     }
 
 }
