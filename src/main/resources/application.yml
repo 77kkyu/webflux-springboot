@@ -5,7 +5,7 @@ spring:
   application:
     name: webflux-api
   r2dbc:
-    url: r2dbc:mysql://localhost:3306/dev-table?serverTimezone=Asia/Seoul
+    url: r2dbc:postgresql://localhost:5432/postgres?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Seoul
     username: 77kkyu
     password: 1234
 
