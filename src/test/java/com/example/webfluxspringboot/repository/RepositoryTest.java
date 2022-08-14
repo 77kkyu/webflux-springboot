@@ -1,32 +1,40 @@
 package com.example.webfluxspringboot.repository;
 
-import com.example.webfluxspringboot.dev.domain.Board;
-import com.example.webfluxspringboot.dev.dto.BoardsResponseDto;
-import com.example.webfluxspringboot.dev.repository.BoardRepository;
+import com.example.webfluxspringboot.dev.board.domain.Board;
+import com.example.webfluxspringboot.dev.board.repository.BoardRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.List;
-import java.util.stream.Stream;
-
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@DataR2dbcTest
 public class RepositoryTest {
 
     @Autowired
     private BoardRepository boardRepository;
 
     @Test
-    public void select() {
-        Flux<Board> boardList =  boardRepository.findAll();
-        System.out.println("TEST : " + boardList.toString());
+    public void boards() {
+        Flux<Board> boardFlux = boardRepository.findAll();
+        boardFlux.subscribe(e -> System.out.println("test : " + e.toString()));
     }
 
     @Test
-    public void boards() {
-        Flux<Board> boardFlux = boardRepository.findAll();
-        boardFlux.subscribe(System.out::println);
+    public void addBoard() {
+        Mono<Board> add = boardRepository.save(Board.builder()
+                        .title("제목")
+                        .contents("내용")
+                .build());
+        add.subscribe();
+    }
+
+    @Test
+    public void findBoard() {
+        boardRepository.findById(1L).subscribe(e -> System.out.println("test : " + e.toString()));
     }
 
 }

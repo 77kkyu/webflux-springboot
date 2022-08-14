@@ -1,15 +1,13 @@
 package com.example.webfluxspringboot.service;
 
-import com.example.webfluxspringboot.dev.domain.Board;
-import com.example.webfluxspringboot.dev.dto.BoardAddResponseDto;
-import com.example.webfluxspringboot.dev.dto.BoardsResponseDto;
-import com.example.webfluxspringboot.dev.service.BoardService;
+import com.example.webfluxspringboot.dev.board.dto.response.BoardAddResponseDto;
+import com.example.webfluxspringboot.dev.board.service.BoardService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import reactor.core.publisher.Flux;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
 public class BoardServiceTest {
 
     @Autowired
@@ -26,9 +24,9 @@ public class BoardServiceTest {
         boardService.getBoard().subscribe();
     }
 
-    @Test
-    public void getBoards() {
-        boardService.boards().subscribe(System.out::println);
-    }
+//    @Test
+//    public void getBoards() {
+//        boardService.boards().subscribe(System.out::println);
+//    }
 
 }
