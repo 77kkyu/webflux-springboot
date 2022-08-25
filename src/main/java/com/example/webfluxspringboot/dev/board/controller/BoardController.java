@@ -9,7 +9,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Log4j2
@@ -25,7 +24,7 @@ public class BoardController {
     }
 
     @GetMapping("/board/{id}")
-    public Mono<BoardsResponseDto> boards(Long id) {
+    public Mono<BoardsResponseDto> board(Long id) {
         return boardService.findBoard(id);
     }
 
