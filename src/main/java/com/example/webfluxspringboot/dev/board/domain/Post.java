@@ -1,9 +1,11 @@
 package com.example.webfluxspringboot.dev.board.domain;
 
 import lombok.Builder;
+import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
+@Getter
 @Table("post")
 public class Post {
 
