@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @Log4j2
 @RequiredArgsConstructor
 @RestController
@@ -26,6 +28,11 @@ public class BoardController {
     @GetMapping("/board/{id}")
     public Mono<BoardsResponseDto> board(Long id) {
         return boardService.findBoard(id);
+    }
+
+    @GetMapping("/boards")
+    public Mono<List<BoardsResponseDto>> boards() {
+        return boardService.boards();
     }
 
 }

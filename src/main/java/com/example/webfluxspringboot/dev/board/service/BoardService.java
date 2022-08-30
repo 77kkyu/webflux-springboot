@@ -3,11 +3,14 @@ package com.example.webfluxspringboot.dev.board.service;
 import com.example.webfluxspringboot.dev.board.domain.Board;
 import com.example.webfluxspringboot.dev.board.dto.request.BoardAddRequestDto;
 import com.example.webfluxspringboot.dev.board.dto.response.BoardAddResponseDto;
+import com.example.webfluxspringboot.dev.board.dto.response.BoardsResponseDto;
 import com.example.webfluxspringboot.dev.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -44,7 +47,18 @@ public class BoardService {
         }).doOnError(RuntimeException -> {
             throw new RuntimeException("board add error");
         });
+    }
 
+    public Mono<List<BoardsResponseDto>> boards() {
+        return boardRepository.findAll()
+            .map(board -> {
+                return BoardsResponseDto.builder()
+                    .id(board.getId())
+                    .contents(board.getContents())
+                    .title(board.getTitle())
+                    .userId(board.getUserId())
+                    .build();
+            }).collectList();
     }
 
     public Flux boardNewTitle() {
