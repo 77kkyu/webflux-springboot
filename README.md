@@ -12,7 +12,38 @@
 처음에는 기능이 잘 동작하다가도 어느 순간 되면 딜레이를 무시하는 경우도 있었고
 아직 미숙한 게 많아 더 깊은 공부가 필요할 것 같습니다
 ```
+### WebFlux
+Spring MVC에서는 Thread에서 요청을 처리하게 된다(Thread 개수는 200개)
+요청이 들어오면 Thread하나를 잡고 처리하게 되고 해당 Thread는 다른 호출이 왔을때 그동안 block이 되고
+처리가 끝나면 block을 풀고 진행합니다
 
+WebFlux는 EventLoop 방식으로 처리를 합니다(Thread 개수는 Core의 개수 * 2)
+작업은 Event로 처리가 되어 API호출될 때 block되지 않고 다른 Thread에서 받아서 이어서 작업을 한다
+
+webflux가 느린 이유
+- log()함수 제거
+    - 로그를 남기는 역할이지만 실제로는 blocking I/O를 일으키기 때문에 성능 저하가 일어난다
+- map() 사용 지향
+    - map() 메서드는 연산마다 객체를 생성하고 GC의 대상이 많아진다   , 동기식 함수
+    - flatMap() 메서드 사용, 비동기식 함수
+- lettuce 설정 (lettuce는 네티 기반으로 NIO의 비동기로 동작)
+    - Connection validation 시, synchronous 동작
+    - command 실행 마다 ping command를 synchronous로 실행
+
+개선사항 .parallel()
+- Reactor Meltdown
+    - Event Loop의 Thread들이 Blocking API때문에 Reactor 시스템이 Hang 걸리는 현상
+    - Bolocking API를 위한 별도의 Thread Pool로 격리시키는 방법
+    - subcribeOn(), publishOn()
+---
+      ex)
+      .publishOn(*) // blocking 코드를 위한 별도의 Thread Pool을 전달
+      .map(x -> x)
+      .flatMap(*)
+---
+    .map(x -> x)
+    .subscribeOn(Schedulers.parallel())
+    .flatMap(*)
 
 
 ### Hot, Cold
