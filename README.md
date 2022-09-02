@@ -20,7 +20,7 @@ Spring MVC에서는 Thread에서 요청을 처리하게 된다(Thread 개수는 
 WebFlux는 EventLoop 방식으로 처리를 합니다(Thread 개수는 Core의 개수 * 2)
 작업은 Event로 처리가 되어 API호출될 때 block되지 않고 다른 Thread에서 받아서 이어서 작업을 한다
 
-webflux가 느린 이유
+[내가 만든 webflux가 느린 이유](https://forward.nhn.com/2020/session/26)
 - log()함수 제거
     - 로그를 남기는 역할이지만 실제로는 blocking I/O를 일으키기 때문에 성능 저하가 일어난다
 - map() 사용 지향
@@ -36,10 +36,9 @@ webflux가 느린 이유
     - Bolocking API를 위한 별도의 Thread Pool로 격리시키는 방법
     - subcribeOn(), publishOn()
 ---
-      ex)
-      .publishOn(*) // blocking 코드를 위한 별도의 Thread Pool을 전달
-      .map(x -> x)
-      .flatMap(*)
+    .publishOn(*) // blocking 코드를 위한 별도의 Thread Pool을 전달
+    .map(x -> x)
+    .flatMap(*)
 ---
     .map(x -> x)
     .subscribeOn(Schedulers.parallel())
